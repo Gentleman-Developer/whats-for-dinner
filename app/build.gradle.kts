@@ -44,6 +44,7 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.fragment)
     val nav_version = "2.8.3"   // en güncel stable (Ağustos 2025 için)
     val room_version = "2.6.1"  // en güncel stable
 
