@@ -9,10 +9,18 @@
         android:id="@+id/randomFragment"
         android:name="com.example.whatsfordinner.RandomFragment"
         android:label="fragment_random"
-        tools:layout="@layout/fragment_random" />
+        tools:layout="@layout/fragment_random" >
+        <action
+            android:id="@+id/action_randomFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
     <fragment
         android:id="@+id/listFragment"
         android:name="com.example.whatsfordinner.ListFragment"
         android:label="fragment_list"
-        tools:layout="@layout/fragment_list" />
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_listFragment_to_randomFragment"
+            app:destination="@id/randomFragment" />
+    </fragment>
 </navigation>

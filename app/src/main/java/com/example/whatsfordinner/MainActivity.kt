@@ -5,23 +5,48 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.whatsfordinner.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    // ViewBinding için property
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // ViewBinding ile layout'u inflate et
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
-        enableEdgeToEdge()
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        // Toolbar'ı ActionBar olarak ayarla
+        setSupportActionBar(binding.toolbar)
+
+        // NavHostFragment'i bul ve NavController al
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        // AppBarConfiguration ile "ana fragmentleri" belirt
+        // Ana fragmentlerde geri ok gösterilmez
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.randomFragment) // Ana ekran id'si
+        )
+
+        // Toolbar ile NavController'ı bağla
+        // Böylece geri ok ve title otomatik yönetilir
+        setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    // Geri ok tuşuna basıldığında NavController ile geri git
+    override fun onSupportNavigateUp(): Boolean {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

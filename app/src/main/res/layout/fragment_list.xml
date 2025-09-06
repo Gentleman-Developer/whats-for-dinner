@@ -10,7 +10,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:paddingTop="160dp">
     <EditText
         android:id="@+id/addEditText"
         android:layout_weight="1"
@@ -28,7 +28,7 @@
 </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listRecyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/listRecyclerview" />
+        android:layout_height="match_parent" />
 </LinearLayout>
