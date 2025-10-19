@@ -1,6 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">What\'s For Dinner</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="meal_database">meal_database</string>
     <string name="list_is_empty">List is empty</string>
     <string name="add_meal">Add Meal</string>
