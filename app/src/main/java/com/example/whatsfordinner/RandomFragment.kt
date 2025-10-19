@@ -8,18 +8,25 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.whatsfordinner.databinding.FragmentListBinding
 import com.example.whatsfordinner.databinding.FragmentRandomBinding
 
-class SuggestionFragment : Fragment() {
+// 🔹 RandomFragment: Kullanıcının listedeki yemeklerden rastgele birini görmesini sağlar.
+class RandomFragment : BaseFragment(R.layout.fragment_random) {
 
+    // 🔹 ViewBinding kullanımı. _binding nullable, binding safe call ile erişiliyor
     private var _binding: FragmentRandomBinding? = null
     private val binding get() = _binding!!
 
+    // 🔹 Fragment'te kullanılacak ViewModel
+    private lateinit var viewModel: MealViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Fragment menüsü kullanacağımızı belirt
+        // 🔹 Bu fragment menü öğelerini kullanacak
         setHasOptionsMenu(true)
     }
 
@@ -27,6 +34,7 @@ class SuggestionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // 🔹 Fragment layoutunu binding ile inflate et
         _binding = FragmentRandomBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -34,34 +42,60 @@ class SuggestionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Öner butonuna tıklandığında rastgele yemek seç
-        binding.randomButton.setOnClickListener {
-            val list = listOf("Pizza", "Pasta", "Salad")
-            val randomFood = list.random()
-            binding.randomText.text = randomFood
+        // 🔹 Repository oluştur: DAO üzerinden veritabanı ile bağlantı
+        val repository = MealRepository(MealDatabase.getDatabase(requireContext()).mealDao())
+
+        // 🔹 ViewModelProvider ile MealViewModel örneği oluştur
+        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return MealViewModel(repository) as T
+            }
+        }).get(MealViewModel::class.java)
+
+        // 🔹 ViewModel'deki meals StateFlow'unu collect ile gözlemle
+        lifecycleScope.launchWhenStarted {
+            viewModel.meals.collect { meals ->
+                // 🔹 Random butonuna tıklandığında rastgele bir yemek seç
+                binding.randomButton.setOnClickListener {
+                    if (meals.isNotEmpty()) {
+                        val randomMeal = meals.random() // Liste boş değilse rastgele seç
+                        binding.randomText.text = randomMeal.mealName
+                    } else {
+                        binding.randomText.text = getString(R.string.list_is_empty) // Liste boşsa uyarı
+                    }
+                }
+            }
         }
+
     }
 
-    // Toolbar menüsü oluştur
+    // 🔹 Toolbar menüsünü inflate et
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.tool_up_bar, menu) // + ikonunu menu xml'den al
+        inflater.inflate(R.menu.tool_up_bar, menu) // Menü XML’den + ve diğer ikonlar
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    // Menü item tıklamasını yakala
+    // 🔹 Menü item tıklamalarını yakala
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.addMeal -> {
-                // ListFragment'e git
+                // 🔹 + ikonuna tıklayınca ListFragment'e git
                 findNavController().navigate(R.id.action_randomFragment_to_listFragment)
                 true
             }
+            R.id.aboutApp -> {
+                // 🔹 About ikonuna tıklayınca AboutFragment'e git
+                findNavController().navigate(R.id.action_randomFragment_to_aboutFragment)
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // 🔹 Fragment view destroy olduğunda binding referansını temizle
         _binding = null
     }
 }

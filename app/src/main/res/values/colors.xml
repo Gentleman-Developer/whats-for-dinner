@@ -1,5 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Light Mode -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="primary">#FFC107</color>
+    <color name="primaryVariant">#D4A017</color>
+    <color name="secondary">#D32F2F</color>
+    <color name="background">#FFFFFF</color>
+    <color name="surface">#FFF8E1</color>
+    <color name="onPrimary">#000000</color>
+    <color name="onSecondary">#FFFFFF</color>
+    <color name="onBackground">#000000</color>
+    <color name="onSurface">#000000</color>
+    <color name="deep_brown">#4A2C2A</color>
+
+    <!-- Dark Mode -->
+    <color name="night_black">#FFFFFFFF</color>
+    <color name="night_white">#FF000000</color>
+    <color name="night_primaryVariant">#FFC107</color>
+    <color name="night_primary">#D4A017</color>
+    <color name="night_secondary">#D32F2F</color>
+    <color name="night_background">#121212</color>
+    <color name="night_surface">#1E1E1E</color>
+    <color name="night_onPrimary">#000000</color>
+    <color name="night_onSecondary">#FFFFFF</color>
+    <color name="night_onBackground">#FFFFFF</color>
+    <color name="night_onSurface">#FFFFFF</color>
+    <color name="night_deep_brown">#4A2C2A</color>
 </resources>
+

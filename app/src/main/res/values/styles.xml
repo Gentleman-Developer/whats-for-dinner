@@ -1,0 +1,18 @@
+<resources>
+    <!-- Buton stili -->
+    <style name="MyButton" parent="Widget.Material3.Button">
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textColor">@color/onPrimary</item>
+        <item name="android:backgroundTint">@color/primary</item>
+    </style>
+
+    <!-- TextView stili -->
+    <style name="MyText" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">@color/primaryVariant</item>
+    </style>
+
+    <!-- EditText stili -->
+    <style name="MyEditText" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/primaryVariant</item>
+    </style>
+</resources>
